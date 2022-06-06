@@ -8,7 +8,8 @@ function AddDados() {
 
     async function cadastrar() {
         await firebase.firestore().collection('fichas')
-            .add({
+        .doc('123')    
+        .set({
                 frequencia: freq,
                 mensagems: msg
             })
