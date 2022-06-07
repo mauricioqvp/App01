@@ -1,11 +1,16 @@
 // BD 'estudo' no Firebase
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from '../../services/firebaseConnection';
 
 function AddDados() {
     const [freq, setFreq] = useState(0);
     const [msg, setMsg] = useState('');
     const [lista, setLista] = useState([]);
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [user, setUser] = useState(false);
+    const [userLogged, setUserLogged] = useState({});
 
     async function cadastrar() {
         await firebase.firestore().collection('fichas')
@@ -83,7 +88,7 @@ function AddDados() {
         })
     }
 
-    useState(() => {
+    useEffect(() => {
         async function buscarTodos() {
             await firebase.firestore().collection('fichas')
                 .get()
@@ -109,8 +114,83 @@ function AddDados() {
 
     }, []);
 
+    useEffect(()=>{
+
+        async function checkLogin(){
+            await firebase.auth().onAuthStateChanged((user)=>{
+                if(user){
+                    setUser(true);
+                    setUserLogged({
+                        uid: user.uid,
+                        email: user.email
+                    })
+                } else {
+                    setUser(false);
+                    setUserLogged({});
+                }
+            })
+        }
+
+        checkLogin();
+
+    },[]);
+
+    async function regUser(){
+        await firebase.auth().createUserWithEmailAndPassword(email,password)
+        .then((value)=>{
+            console.log(value.user);
+            alert("User registado com sucesso")
+        })
+        .catch((error)=>{
+            if(error.code === 'auth/weak-password'){
+                alert('Senha muito fraca.');
+            }else if(error.code === 'auth/email-already-in-use'){
+                alert('Senha já em uso.');
+            }
+        });
+    }
+
+    async function logout(){
+        await firebase.auth().signOut()
+        .then(()=>{
+            setEmail('');
+            setPassword('');
+        })
+        };
+
+    async function fazerLogin(){
+        await firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((value)=>{
+            console.log(value);
+        }).catch((error)=>{
+            console.log('ERRO AO FAZER O LOGIN' + error);
+        })
+    }
+
     return (
         <div>
+            <h1>React com Firebase:</h1>
+
+            {user && (
+                <div>
+                    <strong>Seja bem vindo! (Você está logado)</strong><br/>
+                    <span>{userLogged.uid} - {userLogged.email}</span>
+                    <br/> <br/>
+                </div>
+            )}
+
+            <div className='container'>
+                <label>E-mail:</label>
+                <input type="text" name="email" value={email} onChange={(e) => setEmail(e.target.value)} /><br/>
+
+                <label>Senha:</label>
+                <input type="password" name="email" value={password} onChange={(e) => setPassword(e.target.value)} /><br/>
+                <button onClick={fazerLogin}>Fazer Login</button>
+                <button onClick={regUser}>Registrar</button>
+                <button onClick={logout}>Sair da conta</button>
+                <hr/>
+            </div>
+
             <h2>Adiciona dos dados ao BD:</h2>
             <label>Frequencia:</label>
             <input type="text" name="frequencia" value={freq} onChange={(e) => { setFreq(e.target.value) }} /><br />
