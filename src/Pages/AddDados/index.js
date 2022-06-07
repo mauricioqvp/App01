@@ -54,15 +54,31 @@ function AddDados() {
             })
     }
 
+    async function update() {
+        await firebase.firestore().collection('fichas')
+            .doc('123')
+            .update({
+                frequencia: freq,
+                mensagems: msg
+            })
+            .then(() => {
+                alert('Update realizado com sucesso!');
+            })
+            .catch(() => {
+                alert('ERRO AO TENTAR O UPDATE');
+            })
+    }
 
-    useState (()=>{
+    useState(() => {
         async function buscarTodos() {
             await firebase.firestore().collection('fichas')
                 .get()
                 .then((snapshot) => {
+                    // ATENÇÃO: este recurso extressa seu BD!
+                    //.onSnapshot((snapshot) => {
                     let itens = [];
 
-                    snapshot.forEach((doc)=>{
+                    snapshot.forEach((doc) => {
                         itens.push({
                             id: doc.data().id,
                             freq: doc.data().frequencia,
@@ -77,7 +93,7 @@ function AddDados() {
         }
         buscarTodos();
 
-    },[]);
+    }, []);
 
     return (
         <div>
@@ -89,16 +105,17 @@ function AddDados() {
             <button onClick={cadastrar}>Cadastrar</button>
             <button onClick={ler}>Ler id: 123</button>
             <button onClick={cadastrarIdAutomatico}>Cadastro com Id automatico</button>
-            <br/><br/>
-            <hr/>
+            <button onClick={update}>Update cadastro Id 123</button>
+            <br /><br />
+            <hr />
             <h2>Registros armazenados:</h2>
-            {lista.map((item)=>{
-                return(
+            {lista.map((item) => {
+                return (
                     <>
                         <span key={item.id}>({item.freq})</span>
                         <strong> {item.mensagem}</strong>
-                        <br/>
-                        <br/>
+                        <br />
+                        <br />
                     </>
                 )
             })}
