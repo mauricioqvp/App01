@@ -11,8 +11,8 @@ function AddDados() {
         await firebase.firestore().collection('fichas')
             .doc('123')
             .set({
-                frequencia: freq,
-                mensagems: msg
+                frequencia: '-1',
+                mensagems: 'Registro 123 (apenas para testes)'
             })
             .then(() => {
                 alert('Dados cadastrados com sucesso!');
@@ -69,6 +69,20 @@ function AddDados() {
             })
     }
 
+    async function excluir(){
+        await firebase.firestore().collection('fichas')
+        .doc('123')
+        .delete()
+        .then(()=>{
+            alert('Registro Id 123, excluído com sucesso!')
+            setFreq('0');
+            setMsg('');
+        })
+        .catch(()=>{
+            alert('Erro ao tentar excluir o registro 123');
+        })
+    }
+
     useState(() => {
         async function buscarTodos() {
             await firebase.firestore().collection('fichas')
@@ -102,10 +116,11 @@ function AddDados() {
             <input type="text" name="frequencia" value={freq} onChange={(e) => { setFreq(e.target.value) }} /><br />
             <label>Mensagem:</label>
             <textarea cols="60" rows="10" value={msg} onChange={(e) => { setMsg(e.target.value) }} /><br />
-            <button onClick={cadastrar}>Cadastrar</button>
+            <button onClick={cadastrar}>Cadastrar Id 123</button>
             <button onClick={ler}>Ler id: 123</button>
             <button onClick={cadastrarIdAutomatico}>Cadastro com Id automatico</button>
             <button onClick={update}>Update cadastro Id 123</button>
+            <button onClick={excluir}>Excluir Id 123</button>
             <br /><br />
             <hr />
             <h2>Registros armazenados:</h2>
