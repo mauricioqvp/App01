@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import './assets/css/styles45.css';
-import imagem from './assets/imgs/cronometro.png';
+import '../assets/css/styles45.css';
+import imagem from '../assets/imgs/cronometro.png';
 
 /* Udemy
 *  Capítulo 45 - Curso React Js do zero ao avançado na prática

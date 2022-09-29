@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './assets/css/styles45.css';
+//import './assets/css/styles45.css';
 import Barra from './Barra';
 
 /* Udemy

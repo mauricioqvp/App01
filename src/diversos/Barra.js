@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './assets/css/styles46.css';
+//import './assets/css/styles46.css';
 
 /* Udemy
 *  Exercício meu -Curso React Js do zero ao avançado na prática
@@ -33,7 +33,7 @@ class Barra extends Component {
                 <meter id="disk_c" value="9" min="0" max="10">2 out of 10</meter>
 
                 */}
-                <label for="disk_d">Sódio:</label>
+                <label htmlFor="disk_d">Sódio:</label>
                 <meter id="disk_d" value={this.state.valor} min="-10" max="10" >para quê serve</meter>
 
                 <p className="botao" onClick={this.aumentar}>Aumentar</p>

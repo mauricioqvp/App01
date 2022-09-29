@@ -4,7 +4,7 @@ import AddDados from "./Pages/AddDados";
 import Home from "./Pages/Home";
 import Escola from "./Pages/LearnContextApi/Escola";
 import ListaDados from "./Pages/ListaDados";
-import Teste from "./diversos/Teste/teste";
+import Teste from "./diversos/App20";
 
 
 function RoutesApp() {
